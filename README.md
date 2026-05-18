@@ -1,6 +1,6 @@
 # A3 Sistema Web Anti Golpes - 26.1
 
-Sistema web m para a consulta de números suspeitos, registro de denúncias e visualização de indicadores de risco associados a golpes telefônicos.
+Sistema web para a consulta de números suspeitos, registro de denúncias e visualização de indicadores de risco associados a golpes telefônicos.
 
 # Tecnologias Utilizadas
 - **Backend:** Node.js + Express.js
