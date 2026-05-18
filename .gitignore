@@ -1,0 +1,17 @@
+# Dependências do Node
+node_modules/
+
+# Variáveis de ambiente
+.env
+
+# Logs do sistema
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.log
+
+# Configurações de IDEs
+.vscode/
+.idea/
+
+.DS_Store
