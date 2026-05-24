@@ -20,6 +20,22 @@ class DenunciaController {
             return res.status(500).json({ erro: 'Erro interno ao processar a denúncia.' });
         }
     }
+
+    async consultar(req, res) {
+        try {
+            const { numero } = req.query;
+
+            if (!numero) {
+                return res.status(400).json({ erro: 'O parâmetro "número" é obrigatório na URL.' });
+            }
+
+            const resultado = await DenunciaService.consultar(numero);
+            return res.status(200).json(resultado);
+        } catch (error) {
+            console.error('Erro no DenunciarController ao consultar:', error);
+            return res.status(500).json({ erro: 'Erro interno ao consultar o número.' });
+        }
+    }
 }
 
 module.exports = new DenunciaController();

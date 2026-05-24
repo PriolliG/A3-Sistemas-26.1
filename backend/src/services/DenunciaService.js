@@ -26,6 +26,27 @@ class DenunciaService {
             denunciaId, telefoneId
         };
     }
+
+    async consultar(numero) {
+        // Sempre registra o log da consulta, independente de o numero estar cadastrado ou n
+        await DenunciaRepository.registrarLogConsulta(numero);
+
+        const dadosTelefone = await DenunciaRepository.consultarDetalhesTelefone(numero);
+
+        if (!dadosTelefone) {
+            // se o numero nunca foi cadastrado/denunciado, retorna uma resposta limpa (Risco Baixo)
+            return {
+                numero,
+                scoreRisco: 0,
+                quantidadeDenuncias: 0,
+                tipoGolpePredominante: "Nenhum",
+                historicoRecente: [],
+                alertasAtivos: [],
+                mensagem: "Este número não possui denúncias registradas."
+            };
+        }
+        return dadosTelefone;
+    }
 }
 
 module.exports = new DenunciaService();
