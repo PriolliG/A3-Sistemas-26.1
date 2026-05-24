@@ -49,7 +49,7 @@ class DenunciaRepository {
             WHERE d.telefone_id = ?
             GROUP BY tg.id
             ORDER BY quantidade DESC
-            LIMIT 1
+            LIMIT 1;
         `;
         const [golpes] = await pool.query(queryGolpeComum, [infoTelefone.id]);
         const golpePredominante = golpes.length > 0 ? golpes[0].tipo_golpe : "Nenhum";

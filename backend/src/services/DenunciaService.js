@@ -1,4 +1,5 @@
 const DenunciaRepository = require('../repositories/DenunciaRepository');
+const ScoreService = require('./ScoreService');
 
 class DenunciaService {
     async registrar(dadosDenuncia) {
@@ -20,10 +21,15 @@ class DenunciaService {
             telefoneId, tipoGolpeId, descricao, dataOcorrencia
         );
 
+        // reputacao dinamica: executa o recalculo do score de risco logo apos salvar a denuncia
+        const novoScore = await ScoreService.calcularEAtualizarScore(telefoneId);
+
         // retorna um resumo do q foi criado
         return {
             mensagem: "Denúncia registrada com sucesso!",
-            denunciaId, telefoneId
+            denunciaId,
+            telefoneId,
+            scoreAtualizado: novoScore
         };
     }
 
