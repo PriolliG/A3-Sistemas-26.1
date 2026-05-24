@@ -1,5 +1,6 @@
 const DenunciaRepository = require('../repositories/DenunciaRepository');
 const ScoreService = require('./ScoreService');
+const PatternDetectionService = require('./PatternDetectionService');
 
 class DenunciaService {
     async registrar(dadosDenuncia) {
@@ -23,6 +24,9 @@ class DenunciaService {
 
         // reputacao dinamica: executa o recalculo do score de risco logo apos salvar a denuncia
         const novoScore = await ScoreService.calcularEAtualizarScore(telefoneId);
+
+        // deteccao de padroes: verifica picos apos insercao de denuncia
+        await PatternDetectionService.verificarSuspeitos(telefoneId, numero);
 
         // retorna um resumo do q foi criado
         return {
@@ -51,7 +55,14 @@ class DenunciaService {
                 mensagem: "Este número não possui denúncias registradas."
             };
         }
-        return dadosTelefone;
+
+        // deteccao de padroes: verifica se o numero virou alvo de consultas em massa
+        // buscamos o id do telefone direto do banco p/ o servico de alertas
+        const telefoneObj = await DenunciaRepository.buscarTelefonePorNumero(numero);
+        await PatternDetectionService.verificarSuspeitos(telefoneObj.id, numero);
+
+        // retorna os dados atualizados (ja incluindo possiveis novos alertas)
+        return await DenunciaRepository.consultarDetalhesTelefone(numero);
     }
 }
 
