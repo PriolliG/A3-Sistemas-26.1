@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #F4F4F4;
+  color: #11224D;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.borda-neon-gradiente {
+  background: linear-gradient(to right, #00F2FE, #F355DA);
+}
