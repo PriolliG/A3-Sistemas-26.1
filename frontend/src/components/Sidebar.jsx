@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function Sidebar({ telaAtiva, setTelaAtiva }) {
     const itensMenu = [
-        { id: 'home', rotulo: 'Scores', icone: ShieldAlert },
+        { id: 'home', rotulo: 'Consulta', icone: ShieldAlert },
         { id: 'denuncia', rotulo: 'Denúncias', icone: FileText },
         { id: 'dashboard', rotulo: 'Padrões', icone: BarChart3 }
     ];

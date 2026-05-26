@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Layout from './components/Layout';
+import Home from './pages/Home';
 
 export default function App() {
   const [telaAtiva, setTelaAtiva] = useState('home');
@@ -8,16 +9,21 @@ export default function App() {
   const renderizarTela = () => {
     switch (telaAtiva) {
       case 'home':
+        return <Home />; // renderiza home dinamica
+      case 'denuncia':
         return (
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-2 text-primaria">Consulte um número suspeito</h1>
-            <p className="text-gray-500">Módulo de consulta pública e scores em construção...</p>
+            <h2 className="text-2xl font-bold mb-2">Registro de Denúncias</h2>
+            <p className="text-gray-500">WIP</p>
           </div>
         );
-      case 'denuncia':
-        return <h2 className="text-xl font-bold">Módulo de Envio de Dénuncias em etapas</h2>;
       case 'dashboard':
-        return <h2 className="text-xl font-bold">Módulo do Dashboard Analítico de Padrões</h2>;
+        return (
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2">Painel Analytics</h2>
+            <p className="text-gray-500">WIP</p>
+          </div>
+        );
       default:
         return <h2 className="text-xl font-bold">Tela não encontrada</h2>;
     }

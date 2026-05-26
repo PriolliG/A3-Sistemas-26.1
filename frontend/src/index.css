@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primaria: #11224D;
+  --color-neonCiano: #00F2FE;
+  --color-neonRosa: #F355DA;
+  --color-riscoBaixo: #00E676;
+  --color-riscoMedio: #FFD600;
+  --color-riscoAlto: #FF1744;
+}
+
 body {
   background-color: #F4F4F4;
   color: #11224D;

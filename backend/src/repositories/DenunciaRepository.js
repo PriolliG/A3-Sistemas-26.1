@@ -56,7 +56,7 @@ class DenunciaRepository {
 
         // 3º busca o historico das 5 ultimas denuncias
         const [historico] = await pool.query(
-            'SELECT descricao FROM alertas WHERE telefone_id = ? AND ativo = 1',
+            'SELECT descricao, criado_em FROM alertas WHERE telefone_id = ? AND ativo = 1 ORDER BY criado_em DESC',
             [infoTelefone.id]
         );
 

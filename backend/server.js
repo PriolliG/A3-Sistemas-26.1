@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 
 // importar a config do banco ativa o teste de conex auto
@@ -7,6 +8,9 @@ const denunciaRoutes = require('./src/routes/DenunciaRoute'); // importa as rota
 const analyticsRoutes = require('./src/routes/AnalyticsRoute'); // importa as rotas de analytics
 
 const app = express();
+
+// middleware cors
+app.use(cors());
 
 // middleware p/ o express entender requisiçao JSON
 app.use(express.json());
