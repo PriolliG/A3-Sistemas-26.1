@@ -75,6 +75,12 @@ class DenunciaRepository {
             alertasAtivo: alertas.map(a => a.descricao)
         };
     }
+
+    // busca todas as categorias de golpe para alimentar a criacao de denuncia
+    async listarTiposGolpe() {
+        const [rows] = await pool.query('SELECT id, nome FROM tipos_golpe ORDER BY nome ASC');
+        return rows;
+    }
 }
 
 module.exports = new DenunciaRepository();

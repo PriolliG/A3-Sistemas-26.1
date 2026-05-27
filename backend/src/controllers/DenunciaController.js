@@ -36,6 +36,17 @@ class DenunciaController {
             return res.status(500).json({ erro: 'Erro interno ao consultar o número.' });
         }
     }
+
+    async listarTipos(req, res) {
+        try {
+            const DenunciaRepository = require('../repositories/DenunciaRepository');
+            const tipos = await DenunciaRepository.listarTiposGolpe();
+            return res.status(200).json(tipos);
+        } catch (error) {
+            console.error('Erro ao listar tipos de golpe:', error);
+            return res.status(500).json({ erro: 'Erro interno ao listar categorias.' });
+        }
+    }
 }
 
 module.exports = new DenunciaController();

@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FingerprintPattern } from 'lucide-react';
 
 export default function Layout({ children, telaAtiva, setTelaAtiva }) {
     return (
@@ -14,6 +15,9 @@ export default function Layout({ children, telaAtiva, setTelaAtiva }) {
                 {/* logotipo no canto superior direito */}
                 <header className="absolute top-8 right-12 flex flex-col items-end">
                     <div className="flex items-center gap-2">
+
+                        <FingerprintPattern size={24} className="text-neonRosa" />                       
+
                         <span className="text-2xl font-bold tracking-tight text-primaria">
                             Golpe<span className="text-transparent bg-clip-text bg-linear-to-r from-neonCiano to-neonRosa">Zero</span>
                         </span>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import DenunciaForm from './pages/DenunciaForm';
 
 export default function App() {
   const [telaAtiva, setTelaAtiva] = useState('home');
@@ -11,12 +12,7 @@ export default function App() {
       case 'home':
         return <Home />; // renderiza home dinamica
       case 'denuncia':
-        return (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Registro de Denúncias</h2>
-            <p className="text-gray-500">WIP</p>
-          </div>
-        );
+        return <DenunciaForm />;
       case 'dashboard':
         return (
           <div className="text-center">
