@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import DenunciaForm from './pages/DenunciaForm';
+import Dashboard from './pages/Dashboard';
 
 export default function App() {
   const [telaAtiva, setTelaAtiva] = useState('home');
@@ -14,12 +15,7 @@ export default function App() {
       case 'denuncia':
         return <DenunciaForm />;
       case 'dashboard':
-        return (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Painel Analytics</h2>
-            <p className="text-gray-500">WIP</p>
-          </div>
-        );
+        return <Dashboard />;
       default:
         return <h2 className="text-xl font-bold">Tela não encontrada</h2>;
     }
