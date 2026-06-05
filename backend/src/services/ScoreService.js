@@ -43,10 +43,14 @@ class ScoreService {
             score += 15;
         }
 
-        // aplica o limite (0-100) e salva no database
-        await ReputacaoRepository.atualizarScore(telefoneId, score);
+        // aplica o limite max (100) no score
+        const scoreFinal = Math.min(100, score);
 
-        return Math.min(100, score);
+        // salva no database
+        await ReputacaoRepository.atualizarScore(telefoneId, scoreFinal);
+
+        // retorna o valor
+        return Math.min(100, scoreFinal);
     }
 }
 
