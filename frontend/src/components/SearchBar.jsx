@@ -1,13 +1,43 @@
 import React from 'react';
-import { Search, PhoneOff } from 'lucide-react';
+import { Search, PhoneOff, Delete } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function SearchBar({ numero, setNumero, onSearch, isLoading, hasSearched }) {
+export default function SearchBar({ numero, setNumero, onSearch, isLoading, hasSearched, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (numero.trim() && !isLoading) {
       onSearch();
     }
+  };
+
+  const handleClearAndClose = () => {
+  setNumero('');
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  // mascara ao escrever o numero
+  const formatarTelefone = (num) => {
+    const limpo = String(num).replace(/\D/g, '');
+    const apenasNumeros = limpo.substring(0, 11);
+    if (apenasNumeros.length === 0 ) return '';
+    if (apenasNumeros.length <= 2) {
+      return `(${apenasNumeros}`;
+    }
+    if (apenasNumeros.length <= 6) {
+      return `(${apenasNumeros.substring(0, 2)}) ${apenasNumeros.substring(2)}`;
+    }
+    if (apenasNumeros.length <= 10) {
+      return `(${apenasNumeros.substring(0, 2)}) ${apenasNumeros.substring(2, 6)}-${apenasNumeros.substring(6)}`;
+    }
+    return `(${apenasNumeros.substring(0, 2)}) ${apenasNumeros.substring(2, 7)}-${apenasNumeros.substring(7)}`;
+  };
+
+  // detecta a digitacao
+  const handleInputChange = (e) => {
+    const valorFormatado = formatarTelefone(e.target.value);
+    setNumero(valorFormatado)
   };
 
   return (
@@ -32,11 +62,23 @@ export default function SearchBar({ numero, setNumero, onSearch, isLoading, hasS
           <input
             type="text"
             value={numero}
-            onChange={(e) => setNumero(e.target.value)}
+            onChange={handleInputChange}
             placeholder="Digite o número de telefone (ex: 11999998888)"
             disabled={isLoading}
             className="bg-transparent text-white placeholder-gray-400 focus:outline-none w-full font-medium tracking-wide text-lg"
           />
+
+          {numero && (
+            <motion.button
+              type="button"
+              onClick={handleClearAndClose}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.9 }}
+              className="text-neonRosa mr-2 shrink-0 focus:outline-none hover:brightness-125 transition-all"
+            >
+              <Delete size={22} />
+            </motion.button>
+          )}
 
           <motion.button
             type="submit"
@@ -48,7 +90,7 @@ export default function SearchBar({ numero, setNumero, onSearch, isLoading, hasS
             {isLoading ? 'Buscando...' : 'Consultar'}
           </motion.button>
           
-          <PhoneOff className="text-neonRosa ml-4 opacity-40 shrink-0" size={20} />
+         {/* <PhoneOff className="text-neonRosa ml-4 opacity-40 shrink-0" size={20} /> */}
         </div>
       </form>
     </motion.div>
