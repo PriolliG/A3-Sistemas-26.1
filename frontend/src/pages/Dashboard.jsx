@@ -10,7 +10,7 @@ export default function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
 
     // mapeamento das cores para os graficos
-    const CORES_NEON = ['#00F2FE', '#F355DA', '#11224D', '#FFD600', '#FF1744'];
+    const CORES_NEON = ['#00F2FE', '#F355DA', '#FFD600', '#FF1744', '00E676']; //#7C11CF
 
     // formatacao para os numeros telefone
     const formatarTelefone = (num) => {
@@ -73,7 +73,7 @@ export default function Dashboard() {
             )}
 
             {/* grid de graficos e paineis */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 select-none **:focus:outline-none **:outline-none">
 
                 {/* 1º top 5 numeros mais denunciados */}
                 <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm flex flex-col justify-between">
@@ -114,7 +114,7 @@ export default function Dashboard() {
                     <div className="w-full h-56 flex items-center justify-center">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
-                                <Pie
+                                <Pie                                
                                     data={dados?.golpesMaisComuns}
                                     dataKey={"total_ocorrencias"}
                                     nameKey="tipo_golpe"
@@ -127,6 +127,7 @@ export default function Dashboard() {
                                     {dados?.golpesMaisComuns.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={CORES_NEON[index % CORES_NEON.length]} />
                                     ))}
+                                    <LabelList dataKey="total_ocorrencias" position="inside" style={{ fill: '#11224D', fontSize: 11, fontWeight: 600 }}/>
                                 </Pie>
                                 <Tooltip contentStyle={{ background: '#11224D', color: '#fff', borderRadius: '12px', border: 'none' }} />
                                 <Legend iconType='circle' wrapperStyle={{ fontSize: '11px', fontWeight: 600 }} />
@@ -166,8 +167,11 @@ export default function Dashboard() {
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={dados?.evolucaoDenuncias}>
                                 <XAxis dataKey="data_registro" tickFormatter={(v) => new Date(v).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })} tick={{ fill: '#9CA3AF', fontSize: '11', fontWeight: '600' }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} />
-                                <Tooltip contentStyle={{ background: '#11224D', color: '#fff', borderRadius: '12px', border: 'none' }} />
+                                <YAxis tick={{ fill: '#9CA3AF', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                                <Tooltip 
+                                    labelFormatter={(label) => `Data: ${new Date(String(label).replace(' ', 'T')).toLocaleDateString('pt-BR')}`}
+                                    contentStyle={{ background: '#11224D', color: '#fff', borderRadius: '12px', border: 'none' }} 
+                                />
                                 <Line type="monotone" dataKey="total_denuncias" name="Denúncias" stroke="#00F2FE" strokeWidth={3} dot={{ r: 4, stroke: '#00F2FE', strokeWidth: 2, fill: '#fff' }} activeDot={{ r: 6 }} />
                             </LineChart>
                         </ResponsiveContainer>
