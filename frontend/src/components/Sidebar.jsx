@@ -1,12 +1,13 @@
 import React from 'react';
-import { ShieldAlert, FileText, BarChart3, Menu } from 'lucide-react';
+import { ShieldAlert, FileText, BarChart3, Menu, Settings } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Sidebar({ telaAtiva, setTelaAtiva }) {
     const itensMenu = [
         { id: 'home', rotulo: 'Consulta', icone: ShieldAlert },
         { id: 'denuncia', rotulo: 'Denúncias', icone: FileText },
-        { id: 'dashboard', rotulo: 'Padrões', icone: BarChart3 }
+        { id: 'dashboard', rotulo: 'Estatísticas', icone: BarChart3 },
+        { id: 'config', rotulo: 'Configurações', icone: Settings }
     ];
 
     return (
@@ -19,6 +20,7 @@ export default function Sidebar({ telaAtiva, setTelaAtiva }) {
                 {itensMenu.map((item) => {
                     const IconeComponente = item.icone;
                     const isActive = telaAtiva === item.id;
+                    const isConfig = item.id === 'config';
 
                     return (
                         <motion.button
@@ -27,7 +29,8 @@ export default function Sidebar({ telaAtiva, setTelaAtiva }) {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                             className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all duration-300 relative group w-full
-                                ${isActive ? 'text-neonCiano bg-white/5' : 'text-gray-400 hover:text-white'}`}
+                                ${isActive ? 'text-neonCiano bg-white/5' : 'text-gray-400 hover:text-white'}
+                                ${isConfig ? 'mt-auto' : ''}`}
                         >
                             <IconeComponente size={24} />
                             <span className="text-[10px] mt-1 font-medium tracking-wide">{item.rotulo}</span>
