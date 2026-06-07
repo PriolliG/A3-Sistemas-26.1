@@ -34,7 +34,9 @@ export default function Home() {
   const numeroSemDenuncias = resultado && resultado.quantidadeDenuncias === 0;
 
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-[60vh]">
+    <div className={`w-full flex flex-col items-center min-h-[60vh] transition-all duration-300
+      ${hasSearched ? 'justify-start pt-12' : 'justify-center'}`}
+    >
       
       {/* titulo principal */}
       {!hasSearched && (
@@ -54,6 +56,7 @@ export default function Home() {
         onSearch={handleBuscar}
         isLoading={isLoading}
         hasSearched={hasSearched}
+        onClose={resetarBusca}
       />
 
       {/* card de resultado completo (efeito fadeIn) */}
@@ -88,12 +91,12 @@ export default function Home() {
                 {resultado.mensagem || "Não existem denúncias ou atividades suspeitas registradas para este número em nosso banco de dados."}
               </p>
             
-              <button
+              {/* <button
                 onClick={resetarBusca}
                 className="inline-flex items-center gap-2 text-sm font-bold text-white bg-primaria px-6 py-3 rounded-2xl hover:bg-opacity-90 transition-all shadow-md"
               >
                 Nova Consulta <ArrowRight size={16} />
-              </button>
+              </button> */}
             </motion.div>
           ) : (
             /* 2º cenario: mostra numeros com denuncias */
@@ -139,12 +142,12 @@ export default function Home() {
               {/* historico recente */}
                 <div>
                     <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 flex items-center gap-2">
-                        <MessageSquare size={16} className="text-neonCiano" /> Histórico Recente
+                        <MessageSquare size={16} className="text-neonCiano" /> Alertas Recentes
                     </h3>
 
                     {resultado.historicoRecente?.length === 0 ? (
                         <div className="bg-white/5 border border-white/5 rounded-2xl p-6 text-center text-gray-400 text-sm flex items-center justify-center gap-2">
-                            <ShieldCheck size={18} className="text-riscoBaixo" /> Nenhum relato malicioso encontrado nas descrições.
+                            <ShieldCheck size={18} className="text-riscoBaixo" /> Nenhum alerta encontrado!
                         </div>
                     ) : (
                         <div className="flex flex-col gap-3">

@@ -13,7 +13,7 @@ export default function Layout({ children, telaAtiva, setTelaAtiva }) {
             <main className="flex-1 pl-24 min-h-screen relative flex flex-col justify-center items-center px-6 md:px-12">
 
                 {/* logotipo no canto superior direito */}
-                <header className="absolute top-8 right-12 flex flex-col items-end">
+                <header className="absolute top-8 right-12 flex flex-col items-end z-10">
                     <div className="flex items-center gap-2">
 
                         <FingerprintPattern size={24} className="text-neonRosa" />                       
@@ -22,8 +22,9 @@ export default function Layout({ children, telaAtiva, setTelaAtiva }) {
                             Golpe<span className="text-transparent bg-clip-text bg-linear-to-r from-neonCiano to-neonRosa">Zero</span>
                         </span>
                     </div>
-                    <span className="text-[9px] text-gray-500 uppercase tracking-widest mt-0.5">
-                        Plataforma Inteligente de Detecção de Golpes
+                    <span className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
+                        Toda denúncia conta
+                        {/*Plataforma Inteligente de Detecção de Golpes */}
                     </span>
                 </header>
 
