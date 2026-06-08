@@ -42,6 +42,8 @@ export default function App() {
         return <Dashboard />;
       case 'admin':
         return <AdminPortal />;
+      case 'config':
+        return <h2 className="text-xl font-bold">Tela em desenvolvimento</h2>
       default:
         return <h2 className="text-xl font-bold">Tela não encontrada</h2>;
     }
