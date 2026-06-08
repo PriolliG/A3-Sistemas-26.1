@@ -158,7 +158,7 @@ export default function DenunciaForm() {
                                         type="text"
                                         value={numero}
                                         onChange={handleNumeroChange}
-                                        placeholder="(11) 99999-8888"
+                                        placeholder="(11) 98888-7777"
                                         maxLength={15}
                                         className="w-full bg-backgroud border border-gray-200 rounded-2xl px-5 py-3.5 focus:outline-none focus:border-neonCiano font-medium tracking-wide transition-colors"
                                         required
