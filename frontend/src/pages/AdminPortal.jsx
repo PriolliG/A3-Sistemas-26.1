@@ -58,6 +58,42 @@ export default function AdminPortal() {
         }
     };
 
+    const handleDeletarTelefone = async (id) => {
+        if (!window.confirm("Tem certeza que deseja remover este número? Todas as denúncias e alertas vinculados a ele tambêm serão removidass.")) return;
+        try {
+            await api.delete('/admin/telefone', {
+                headers: { 'Authorization': tokenValido },
+                data: { id }
+            });
+            carregarDadosAdmin(tokenValido);
+        } catch (err) {
+            alert("Erro ao remover o número.");
+        }
+    };
+
+    const handleDeletarTodosLogs = async () => {
+        if (!window.confirm("Você tem certeza que deseja apagar todos os logs de busca do sistema? Isso reiniciará o histórico de contagem do detector de padrões.")) return;
+        try {
+            await api.delete('/admin/logs/limpar', {
+                headers: { 'Authorization': tokenValido }
+            });
+            carregarDadosAdmin(tokenValido);
+        } catch (err) {
+            alert("Erro ao remover os logs.");
+        }
+    };
+
+    // formatacao para os numeros telefone
+    const formatarTelefone = (num) => {
+        const limpo = String(num).replace(/\D/g, '');
+        if (limpo.length === 11) {
+            return `(${limpo.substring(0, 2)}) ${limpo.substring(2, 7)}-${limpo.substring(7)}`;
+        } else if (limpo.length === 10) {
+            return `(${limpo.substring(0, 2)}) ${limpo.substring(2, 6)}-${limpo.substring(6)}`;
+        }
+        return num;
+    };
+
     // tela de bloqueio: pede a chave de autenticacao
     if (!tokenValido) {
         return (
@@ -109,10 +145,21 @@ export default function AdminPortal() {
             </div>
 
             {/* menu de abas internas */}
-            <div className="flex gap-2 bg-background p-1.5 rounded-2xl w-max">
-                <button onClick={() => setAbaInterna('denuncias')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${abaInterna === 'denuncias' ? 'bg-primaria text-white shadow' : 'text-gray-500 hover:text-primaria'}`}>Denúncias</button>
-                <button onClick={() => setAbaInterna('telefones')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${abaInterna === 'telefones' ? 'bg-primaria text-white shadow' : 'text-gray-500 hover:text-primaria'}`}>Números</button>
-                <button onClick={() => setAbaInterna('logs')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${abaInterna === 'logs' ? 'bg-primaria text-white shadow' : 'text-gray-500 hover:text-primaria'}`}>Logs de Busca</button>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex gap-2 bg-background p-1.5 rounded-2xl w-max">
+                    <button onClick={() => setAbaInterna('denuncias')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${abaInterna === 'denuncias' ? 'bg-primaria text-white shadow' : 'text-gray-500 hover:text-primaria'}`}>Denúncias</button>
+                    <button onClick={() => setAbaInterna('telefones')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${abaInterna === 'telefones' ? 'bg-primaria text-white shadow' : 'text-gray-500 hover:text-primaria'}`}>Números</button>
+                    <button onClick={() => setAbaInterna('logs')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${abaInterna === 'logs' ? 'bg-primaria text-white shadow' : 'text-gray-500 hover:text-primaria'}`}>Logs de Busca</button>
+                </div>
+
+                {abaInterna === 'logs' && dadosAdmin?.logs.length > 0 && (
+                    <button
+                        onClick={handleDeletarTodosLogs}
+                        className="text-xs font-bold text-whitebg-red-500 px-4 py-2.5 rounded-xl hover:bg-red-600 transition-colors shadow-sm"
+                    >
+                        Apagar Histórico de Logs
+                    </button>
+                )}
             </div>
 
             {/* tabela dinamica com base na aba ativa */}
@@ -123,6 +170,7 @@ export default function AdminPortal() {
                             <tr className="broder-b border-gray-100 text-[11px] font-black uppercase text-gray-400 tracking-wider">
                                 <th className="pb-3">Telefone</th>
                                 <th className="pb-3">Tipo de Golpe</th>
+                                <th className="pb-3">Data de Entrada</th>
                                 <th className="pb-3">Relato do Usuário</th>
                                 <th className="pb-3 text-right">Ações</th>
                             </tr>
@@ -130,8 +178,9 @@ export default function AdminPortal() {
                         <tbody className="divide-y divide-gray-50 font-medium">
                             {(dadosAdmin?.denuncias || []).map((den) => (
                                 <tr key={den.id} className="hover:bg-gray-50/50">
-                                    <td className="py-4 font-bold text-primaria">{den.numero}</td>
+                                    <td className="py-4 font-bold text-primaria">{formatarTelefone(den.numero)}</td>
                                     <td className="py-4 text-xs"><span className="bg-gray-100 px-2 py-1 rounded-md font-bold">{den.tipo_golpe}</span></td>
+                                    <td className="py-4 text-xs text-gray-400">{new Date(den.criado_em).toLocaleDateString('pt-BR')}</td>
                                     <td className="py-4 text-xs text-gray-500 max-w-xs">"{den.descricao}"</td>
                                     <td className="py-4 text-right">
                                         <button onClick={() => handleDeletarDenuncia(den.id, den.telefone_id)} className="text-red-500 hover:text-red-700 p-2 rounded-xl hover:bg-red-50 transition-colors">
@@ -157,11 +206,11 @@ export default function AdminPortal() {
                         <tbody className="divide-y divide-gray-50 font-medium">
                             {(dadosAdmin?.telefones || []).map((tel) => (
                                 <tr key={tel.id}>
-                                    <td className="py-4 font-bold text-primaria">{tel.numero}</td>
+                                    <td className="py-4 font-bold text-primaria">{formatarTelefone(tel.numero)}</td>
                                     <td className="py-4 font-black" style={{ color: tel.score_risco > 70 ? '#FF1744' : tel.score_risco > 30 ? '#FFD600' : '#00E676' }}>{tel.score_risco}</td>
                                     <td className="py-4 text-xs text-gray-400">{new Date(tel.criado_em).toLocaleDateString('pt-BR')}</td>
                                     <td className="py-4 text-right">
-                                        <button onClick={() => handleDeletarDenuncia(den.id, den.telefone_id)} className="text-red-500 hover:text-red-700 p-2 rounded-xl hover:bg-red-50 transition-colors">
+                                        <button onClick={() => handleDeletarTelefone(tel.id)} className="text-red-500 hover:text-red-700 p-2 rounded-xl hover:bg-red-50 transition-colors">
                                             <Trash2 size={16} />
                                         </button>
                                     </td>
@@ -181,13 +230,19 @@ export default function AdminPortal() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50 font-medium text-gray-600">
-                            {(dadosAdmin?.logs || []).map((log) => (
-                                <tr key={log.id}>
-                                    <td className="py-3 text-xs text-gray-400">#{log.id}</td>
-                                    <td className="py-3 font-semibold text-primaria">{log.numero_buscado}</td>
-                                    <td className="py-3 text-xs">{new Date(log.data_consulta).toLocaleDateString('pt-BR')}</td>
+                            {dadosAdmin?.logs.length === 0 ? (
+                                <tr>
+                                    <td colSpan="3" className="py-8 text-center text-gray-400 font-medium text-xs">Nenhum registro de log de busca no sistema.</td>
                                 </tr>
-                            ))}
+                            ) : (
+                                (dadosAdmin?.logs || []).map((log) => (
+                                    <tr key={log.id}>
+                                        <td className="py-3 text-xs text-gray-400">#{log.id}</td>
+                                        <td className="py-3 font-semibold text-primaria">{log.numero_buscado}</td>
+                                        <td className="py-3 text-xs">{new Date(log.data_consulta).toLocaleString('pt-BR')}</td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 )}

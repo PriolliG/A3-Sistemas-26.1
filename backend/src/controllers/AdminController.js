@@ -27,7 +27,29 @@ class AdminController {
             if (telefoneId) {
                 await ScoreService.calcularEAtualizarScore(telefoneId);
             }
-            return res.status(200).json({ sucesso: true, mensagem: "Denúncia removida com sucesso!" });
+            return res.status(200).json({ sucesso: true, mensagem: "Denúncia removida com sucesso." });
+        } catch (error) {
+            return res.status(500).json({ erro: error.message });
+        }
+    }
+
+    async removerTelefone(req, res) {
+        try {
+            const { id } = req.body;
+            if (!id) {
+                return res.status(400).json({ erro: 'O ID do telefone é obrigatório.' });
+            }
+            await AdminRepository.deletarTelefone(id);
+            return res.status(200).json({ sucesso: true, mensagem: "Telefone e seu histórico removidos com sucesso." });
+        } catch (error) {
+            return res.status(500).json({ erro: error.message });
+        }
+    }
+
+    async removerLogsGerais(req, res) {
+        try {
+            await AdminRepository.limparTodosLogs();
+            return res.status(200).json({ sucesso: true, mensagem: "Todos os logs foram apagados com sucesso."});
         } catch (error) {
             return res.status(500).json({ erro: error.message });
         }

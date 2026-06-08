@@ -30,6 +30,10 @@ class AdminRepository {
     async deletarTelefone(id) {
         await pool.query('DELETE FROM telefones WHERE id = ?', [id]);
     }
+
+    async limparTodosLogs() {
+        await pool.query('DELETE FROM logs_consulta');
+    }
 }
 
 module.exports = new AdminRepository();
