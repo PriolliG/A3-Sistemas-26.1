@@ -65,7 +65,7 @@ export default function SearchBar({ numero, setNumero, onSearch, isLoading, hasS
             type="text"
             value={numero}
             onChange={handleInputChange}
-            placeholder="Digite o número de telefone (ex: 11999998888)"
+            placeholder="Digite o número de telefone"
             disabled={isLoading}
             className="bg-transparent text-white placeholder-gray-400 focus:outline-none w-full font-medium tracking-wide text-lg"
           />
