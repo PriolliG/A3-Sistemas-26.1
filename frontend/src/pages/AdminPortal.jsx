@@ -353,7 +353,7 @@ export default function AdminPortal() {
                                 </p>
                             </div>
 
-                            <div className="max-h-[250px] overflow-y-auto pr-2 flex flex-col gap-2 divide-y divide-gray-100">
+                            <div className="max-h-62.5 overflow-y-auto pr-2 flex flex-col gap-2 divide-y divide-gray-100">
                                 {dadosAdmin?.tipoGolpes?.length === 0 ? (
                                     <p className="text-xs text-gray-400 font-medium py-4 text-center">Nenhum tipo de golpe encontrado.</p>
                                 ) : (
