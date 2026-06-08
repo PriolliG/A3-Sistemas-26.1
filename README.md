@@ -14,4 +14,5 @@ Sistema web para a consulta de números suspeitos, registro de denúncias e visu
 - Calcular score de reputação dinâmico (Baixo, Médio e Alto risco).
 - Detectar padrões suspeitos de atividade (picos de denúncias, campanhas de fraude).
 - Exibir dashboard analítico com estatísticas e tendências.
+- Painel de Admin para gerenciamento interno.
 
