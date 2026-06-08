@@ -27,6 +27,17 @@ export default function Home() {
     }
   };
 
+  // formatacao para os numeros telefone
+    const formatarTelefone = (num) => {
+        const limpo = String(num).replace(/\D/g, '');
+        if (limpo.length === 11) {
+            return `(${limpo.substring(0, 2)}) ${limpo.substring(2, 7)}-${limpo.substring(7)}`;
+        } else if (limpo.length === 10) {
+            return `(${limpo.substring(0, 2)}) ${limpo.substring(2, 6)}-${limpo.substring(6)}`;
+        }
+        return num;
+    };
+
   const resetarBusca = () => {
     setResultado(null);
     setHasSearched(false);
@@ -83,7 +94,7 @@ export default function Home() {
               </div>
 
               <h2 className="text-3xl font-black text-primaria tracking-tight mb-2">
-                {resultado.numero}
+                {formatarTelefone(resultado.numero)}
               </h2>
               
               <div className="text-md font-bold text-riscoBaixo uppercase tracking-wider bg-emerald-50 px-4 py-1.5 rounded-full mb-4 border border-emerald-100">
@@ -117,7 +128,7 @@ export default function Home() {
                 <ScoreBadge score={resultado.scoreRisco} />
                 
                 <div className="flex-1 text-center md:text-left">
-                  <h2 className="text-2xl font-bold tracking-tight mb-1 text-white">{resultado.numero}</h2>
+                  <h2 className="text-2xl font-bold tracking-tight mb-1 text-white">{formatarTelefone(resultado.numero)}</h2>
                   <p className="text-sm text-gray-400 mb-3">
                     Denúncias registradas: <span className="text-white font-semibold">{resultado.quantidadeDenuncias}</span>
                   </p>
