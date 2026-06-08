@@ -6,7 +6,9 @@ export default function SearchBar({ numero, setNumero, onSearch, isLoading, hasS
   const handleSubmit = (e) => {
     e.preventDefault();
     if (numero.trim() && !isLoading) {
-      onSearch();
+      // remove a mascara p/ enviar o numero a api
+      const numeroLimpo = numero.replace(/\D/g, '');
+      onSearch(numeroLimpo);
     }
   };
 

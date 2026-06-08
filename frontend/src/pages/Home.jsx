@@ -11,10 +11,13 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleBuscar = async () => {
+  const handleBuscar = async (numeroLimpoParametro) => {
     setIsLoading(true);
+    //usa o numero sem mascara
+    const termoBusca = numeroLimpoParametro || numero.replace(/\D/g, '');
+
     try {
-      const response = await api.get(`/telefones/consulta?numero=${numero}`);
+      const response = await api.get(`/telefones/consulta?numero=${termoBusca}`);
       setResultado(response.data);
       setHasSearched(true);
     } catch (error) {
