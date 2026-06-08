@@ -13,19 +13,23 @@ export default function App() {
 
   useEffect(() => {
     const checarUrl = () => {
-      if (window.location.pathname === '/admin') {
+      const isAdminRoute = window.location.pathname === '/admin';
+      if (isAdminRoute) {
         setTelaAtiva('admin');
+      } else {
+        // se sair da tela de admin, fecha a sessao
+        sessionStorage.removeItem('admin_token');
+        if (telaAtiva === 'admin') setTelaAtiva('home');
       }
     };
 
     // monitora o evento de clique em voltar/avançar no navegador
     window.addEventListener('popstate', checarUrl);
-
     // roda verific inicial
     checarUrl();
 
     return () => window.removeEventListener('popstate', checarUrl);
-  }, []);
+  }, [telaAtiva]);
 
   // funcao auxiliar p/ renderizar a tela selecionada temporariamente
   const renderizarTela = () => {

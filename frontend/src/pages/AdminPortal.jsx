@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, Eye, Trash2, ShieldCheck, Database, FileText, ClipboardList } from 'lucide-react';
 import api from '../services/api';
 
 export default function AdminPortal() {
     const [tokenInput, setTokenInput] = useState('');
-    const [tokenValido, setTokenValido] = useState(localStorage.getItem('admin_token') || '');
+    const [tokenValido, setTokenValido] = useState(sessionStorage.getItem('admin_token') || '');
     const [erro, setErro] = useState('');
     const [dadosAdmin, setDadosAdmin] = useState(null);
     const [abaInterna, setAbaInterna] = useState('denuncias');
@@ -18,7 +18,7 @@ export default function AdminPortal() {
             await api.post('/admin/login', {}, {
                 headers: { 'Authorization': tokenInput }
             });
-            localStorage.setItem('admin_token', tokenInput);
+            sessionStorage.setItem('admin_token', tokenInput);
             setTokenValido(tokenInput);
             carregarDadosAdmin(tokenInput);
         } catch (err) {
@@ -36,13 +36,18 @@ export default function AdminPortal() {
         } catch (err) {
             // se der erro de autorizacao antiga, limpara o token
             setTokenValido('');
-            localStorage.removeItem('admin_token');
+            sessionStorage.removeItem('admin_token');
         }
     };
 
-    // executa o carregamento inicial caso o token ja esteja salvo no navegador
-    React.useEffect(() => {
-        if (tokenValido) carregarDadosAdmin(tokenValido);
+    // limpa o token quando sair da tela de admin
+    useEffect(() => {
+        if (tokenValido) {
+            carregarDadosAdmin(tokenValido);
+        }
+        return () => {
+            sessionStorage.removeItem('admin_token');
+        };
     }, [tokenValido]);
 
     const handleDeletarDenuncia = async (id, telefoneId) => {
@@ -137,7 +142,7 @@ export default function AdminPortal() {
                     <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mt-0.5">Gerenciamento do Sistema</p>
                 </div>
                 <button
-                    onClick={() => { localStorage.removeItem('admin_token'); setTokenValido(''); }}
+                    onClick={() => { sessionStorage.removeItem('admin_token'); setTokenValido(''); setTokenInput(''); }}
                     className="text-xs font-bold text-red-500 bg-red-50 px-4 py-2 rounded-xl hover:bg-red-100 transition-colors"
                 >
                     Encerrar Sessão
