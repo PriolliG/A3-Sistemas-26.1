@@ -12,8 +12,11 @@ class AdminController {
             const telefones = await AdminRepository.listarTodosTelefones();
             const denuncias = await AdminRepository.listarTodasDenuncias();
             const logs = await AdminRepository.listarTodosLogs();
-            return res.status(200).json({ telefones, denuncias, logs });
-        } catch (erro) {
+            const alertas = await AdminRepository.listarTodosAlertas();
+            const tipoGolpes = await AdminRepository.listarTipoGolpes();
+
+            return res.status(200).json({ telefones, denuncias, logs, alertas, tipoGolpes });
+        } catch (error) {
             return res.status(500).json({ erro: error.message });
         }
     }
@@ -52,6 +55,45 @@ class AdminController {
             return res.status(200).json({ sucesso: true, mensagem: "Todos os logs foram apagados com sucesso."});
         } catch (error) {
             return res.status(500).json({ erro: error.message });
+        }
+    }
+
+    async adicionarTipoGolpe(req, res) {
+        try {
+            const { nome } = req.body;
+            if (!nome || nome.trim() === '') {
+                return res.status(400).json({ erro: 'O nome do tipo de golpe é obrigatório!' });
+            }
+            const novoId = await AdminRepository.criarTipoGolpe(nome.trim());
+            return res.status(201).json({ sucesso: true, id: novoId, mensagem: 'Tipo de golpe registrado.' });
+        } catch (error) {
+            return res.status(500).json({ erro: error.message });
+        }
+    }
+
+    async removerAlerta(req, res) {
+        try {
+            const { id } = req.body;
+            if (!id) {
+                return res.status(400).json({ erro: 'O ID do alerta é obrigatório.' });
+            }
+            await AdminRepository.deletarAlerta(id);
+            return res.status(200).json({ sucesso: true, mensagem: 'Alerta removido com sucesso.' });
+        } catch (error) {
+            return res.status(500).json({ erro: error.message });
+        }
+    }
+
+    async removerTipoGolpe(req, res) {
+        try {
+            const { id } = req.body;
+            if (!id) {
+                return res.status(400).json({ erro: 'O ID do tipo de golpe é obrigatório.' });
+            }
+            await AdminRepository.deletarTipoGolpe(id);
+            return res.status(200).json({ sucesso: true, mensagem: 'Tipo de golpe removido com sucesso.' });
+        } catch (error) {
+            return res.status(400).json({erro: 'Não é possível deletar esta categoria pois existem denúncias vinculadas a ela.' });
         }
     }
 }

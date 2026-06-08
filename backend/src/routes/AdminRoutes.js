@@ -11,5 +11,8 @@ router.get('/admin/dados', authMiddleware, AdminController.painelGeral); // pega
 router.delete('/admin/denuncia', authMiddleware, AdminController.removerDenuncia); // deleta a denuncia
 router.delete('/admin/telefone', authMiddleware, AdminController.removerTelefone); // deleta numero
 router.delete('/admin/logs/limpar', authMiddleware, AdminController.removerLogsGerais); // deleta todos os logs
+router.post('/admin/tipo-golpe', authMiddleware, AdminController.adicionarTipoGolpe); // posta o novo tipo de golpe
+router.delete('/admin/alerta', authMiddleware, AdminController.removerAlerta); // deleta o alerta
+router.delete('/admin/tipo-golpe', authMiddleware, AdminController.removerTipoGolpe); // deleta o tipo de golpe
 
 module.exports = router;

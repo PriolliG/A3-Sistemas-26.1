@@ -23,6 +23,31 @@ class AdminRepository {
         return rows;
     }
 
+    async listarTodosAlertas() {
+        const query = `
+            SELECT a.*, t.numero
+            FROM alertas a
+            JOIN telefones t ON a.telefone_id = t.id
+            ORDER BY a.criado_em DESC
+        `;
+        const [rows] = await pool.query(query);
+        return rows;
+    }
+
+    async listarTipoGolpes() {
+        const [rows] = await pool.query('SELECT * FROM tipos_golpe ORDER BY nome ASC');
+        return rows;
+    }
+
+    async criarTipoGolpe(nome) {
+        const [result] = await pool.query('INSERT INTO tipos_golpe (nome) VALUES (?)', [nome]);
+        return result.insertId;
+    }
+
+    async deletarAlerta(id) {
+        await pool.query('DELETE FROM alertas WHERE id = ?', [id]);
+    }
+
     async deletarDenuncia(id) {
         await pool.query('DELETE FROM denuncias WHERE id = ?', [id]);
     }
@@ -33,6 +58,10 @@ class AdminRepository {
 
     async limparTodosLogs() {
         await pool.query('DELETE FROM logs_consulta');
+    }
+
+    async deletarTipoGolpe(id) {
+        await pool.query('DELETE FROM tipos_golpe WHERE id = ?', [id]);
     }
 }
 
