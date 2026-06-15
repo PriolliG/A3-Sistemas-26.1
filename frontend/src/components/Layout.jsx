@@ -1,20 +1,21 @@
 import React from 'react';
 import Sidebar from './Sidebar';
+import BannerAds from './BannerAds';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FingerprintPattern } from 'lucide-react';
 
 export default function Layout({ children, telaAtiva, setTelaAtiva }) {
-
     const isAdminRoute = telaAtiva === 'admin';
+
     return (
-        <div className={`min-h-screen flex transition-colors duration-300 ${isAdminRoute ? 'bg-[#0B0F19]' : 'bg-[#F4F4F4]'}`}>
+        <div className={`min-h-screen flex transition-colors duration-300 relative ${isAdminRoute ? 'bg-[#0B0F19]' : 'bg-[#F4F4F4]'}`}>
             {!isAdminRoute && (
             /* menu lateral fixo */
                 <Sidebar telaAtiva={telaAtiva} setTelaAtiva={setTelaAtiva} />
             )}
             
             {/* conteudo principal dinamico a direita */}
-            <main className={`flex-1 min-h-screen relative flex flex-col  justify-center items-center px-6 md:px-12 ${isAdminRoute ? 'pl-0' : 'pl-24'}`}>
+            <main className={`flex-1 min-h-screen relative flex flex-col  justify-center items-center px-6 md:px-12 ${isAdminRoute ? 'pl-0' : 'pl-24 pr-6 lg:pr-60'}`}>
 
                 {/* logotipo no canto superior direito */}
                 {!isAdminRoute && (
@@ -50,6 +51,13 @@ export default function Layout({ children, telaAtiva, setTelaAtiva }) {
                     </AnimatePresence>
                 </div>
             </main>
+
+            {/* container dos anuncios */}
+            {!isAdminRoute && (
+                <div className="hidden lg:block fixed right-8 top-1/2 -translate-y-1/2 z-40">
+                    <BannerAds />
+                </div>
+            )}
         </div>
     );
 }
