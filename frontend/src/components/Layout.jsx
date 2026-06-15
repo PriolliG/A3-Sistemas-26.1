@@ -4,32 +4,38 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FingerprintPattern } from 'lucide-react';
 
 export default function Layout({ children, telaAtiva, setTelaAtiva }) {
-    return (
-        <div className="min-h-screen bg-background flex text-primaria">
-            {/* menu lateral fixo */}
-            <Sidebar telaAtiva={telaAtiva} setTelaAtiva={setTelaAtiva} />
 
+    const isAdminRoute = telaAtiva === 'admin';
+    return (
+        <div className={`min-h-screen flex transition-colors duration-300 ${isAdminRoute ? 'bg-[#0B0F19]' : 'bg-[#F4F4F4]'}`}>
+            {!isAdminRoute && (
+            /* menu lateral fixo */
+                <Sidebar telaAtiva={telaAtiva} setTelaAtiva={setTelaAtiva} />
+            )}
+            
             {/* conteudo principal dinamico a direita */}
-            <main className="flex-1 pl-24 min-h-screen relative flex flex-col justify-center items-center px-6 md:px-12">
+            <main className={`flex-1 min-h-screen relative flex flex-col  justify-center items-center px-6 md:px-12 ${isAdminRoute ? 'pl-0' : 'pl-24'}`}>
 
                 {/* logotipo no canto superior direito */}
-                <header className="absolute top-8 right-12 flex flex-col items-end z-10">
-                    <div className="flex items-center gap-2">
+                {!isAdminRoute && (
+                    <header className="absolute top-8 right-12 flex flex-col items-end z-10">
+                        <div className="flex items-center gap-2">
 
-                        <FingerprintPattern size={24} className="text-neonRosa" />                       
+                            <FingerprintPattern size={24} className="text-neonRosa" />                       
 
-                        <span className="text-2xl font-bold tracking-tight text-primaria">
-                            Golpe<span className="text-transparent bg-clip-text bg-linear-to-r from-neonCiano to-neonRosa">Zero</span>
+                            <span className="text-2xl font-bold tracking-tight text-primaria">
+                                Golpe<span className="text-transparent bg-clip-text bg-linear-to-r from-neonCiano to-neonRosa">Zero</span>
+                            </span>
+                        </div>
+                        <span className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
+                            Toda denúncia conta
+                            {/*Plataforma Inteligente de Detecção de Golpes */}
                         </span>
-                    </div>
-                    <span className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
-                        Toda denúncia conta
-                        {/*Plataforma Inteligente de Detecção de Golpes */}
-                    </span>
-                </header>
+                    </header>
+                )}
 
                 {/* animacao suave de troca de tela com desfoque e opacidade */}
-                <div className="w-full max-w-5xl py-16">
+                <div className={`w-full ${isAdminRoute ? 'max-w-7xl py-8' : 'max-w-5xl py-16'}`}>
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={telaAtiva}
