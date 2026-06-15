@@ -25,7 +25,8 @@ export default function BannerAds() {
             id: 3,
             // texto: "Baixe a cartilha de prevenção contra fraudes",
             // bgClass: "bg-gradient-to-br from-primaria to-neonCiano",
-            clicavel: false,
+            clicavel: true,
+            link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             imagem: "/assets/banner3.jpeg",
         }
     ];
@@ -43,7 +44,7 @@ export default function BannerAds() {
 
     // estrutura interna do banner
     const ConteudoBanner = () => (
-        <div className={`w-50 h-141.5 rounded-3xl p-6 flex flex-col justify-between text-white shadow-2xl relative overflow-hidden group ${bannerAtivo.bgClass}`}>
+        <div className={`w-40 h-113.5 top-8.5 right-2 rounded-3xl p-6 flex flex-col justify-between text-white shadow-2xl relative overflow-hidden group ${bannerAtivo.bgClass}`}>
             
             <img src={bannerAtivo.imagem} alt="Anúncio" className="absolute inset-0 w-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-500 " />
             <span className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest bg-black/30 w-max px-2 py-1 rounded-md z-10">
@@ -63,7 +64,7 @@ export default function BannerAds() {
     );
 
     return (
-        <div className="w-50 h-141.5 relative">
+        <div className="w-40 h-113.5 relative">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={bannerAtivo.id}

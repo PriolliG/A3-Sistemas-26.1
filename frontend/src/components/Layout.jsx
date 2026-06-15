@@ -15,7 +15,7 @@ export default function Layout({ children, telaAtiva, setTelaAtiva }) {
             )}
             
             {/* conteudo principal dinamico a direita */}
-            <main className={`flex-1 min-h-screen relative flex flex-col  justify-center items-center px-6 md:px-12 ${isAdminRoute ? 'pl-0' : 'pl-24 pr-6 lg:pr-60'}`}>
+            <main className={`flex-1 min-h-screen relative flex flex-col  justify-center items-center px-6 md:px-12 ${isAdminRoute ? 'pl-0' : 'pl-24'}`}>
 
                 {/* logotipo no canto superior direito */}
                 {!isAdminRoute && (
@@ -53,7 +53,7 @@ export default function Layout({ children, telaAtiva, setTelaAtiva }) {
             </main>
 
             {/* container dos anuncios */}
-            {!isAdminRoute && (
+            {(!isAdminRoute && telaAtiva !== 'dashboard') &&(
                 <div className="hidden lg:block fixed right-8 top-1/2 -translate-y-1/2 z-40">
                     <BannerAds />
                 </div>
