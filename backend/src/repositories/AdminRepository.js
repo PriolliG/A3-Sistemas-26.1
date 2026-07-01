@@ -17,6 +17,13 @@ class AdminRepository {
         const [rows] = await pool.query(query);
         return rows;
     }
+    async listarLogsPaginados(limite, offset) {
+        const [rows] = await pool.query(
+            'SELECT * FROM logs_consulta ORDER BY data_consulta DESC LIMIT ? OFFSET ?',
+            [Number(limite), Number(offset)]
+        );
+        return rows;
+    }
 
     async listarTodosLogs() {
         const [rows] = await pool.query('SELECT * FROM logs_consulta ORDER BY data_consulta DESC LIMIT 100');
@@ -62,6 +69,11 @@ class AdminRepository {
 
     async deletarTipoGolpe(id) {
         await pool.query('DELETE FROM tipos_golpe WHERE id = ?', [id]);
+    }
+
+    async contarTotalLogs() {
+        const [rows] = await pool.query('SELECT COUNT(id) as total FROM logs_consulta');
+        return rows[0].total;
     }
 }
 

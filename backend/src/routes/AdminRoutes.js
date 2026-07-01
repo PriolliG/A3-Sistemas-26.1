@@ -14,5 +14,6 @@ router.delete('/admin/logs/limpar', authMiddleware, AdminController.removerLogsG
 router.post('/admin/tipo-golpe', authMiddleware, AdminController.adicionarTipoGolpe); // posta o novo tipo de golpe
 router.delete('/admin/alerta', authMiddleware, AdminController.removerAlerta); // deleta o alerta
 router.delete('/admin/tipo-golpe', authMiddleware, AdminController.removerTipoGolpe); // deleta o tipo de golpe
+router.get('/admin/logs', authMiddleware, AdminController.obterLogs); // pega os dados dos logs
 
 module.exports = router;

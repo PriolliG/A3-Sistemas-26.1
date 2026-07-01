@@ -11,6 +11,8 @@ export default function AdminPortal() {
     const [abaInterna, setAbaInterna] = useState('denuncias');
     const [novoGolpe, setNovoGolpe] = useState('');
     const [msgSucessoGolpe, setMsgSucessoGolpe] = useState('');
+    const [dadosLogs, setDadosLogs] = useState({ dados: [], paginaAtual: 1, totalPaginas: 1, totalRegistros: 0 });
+    const [carregandoLogs, setCarregandoLogs] = useState(false);
 
     // tenta autenticar a chave digitada com o backend
     const handleVerificarChave = async (e) => {
@@ -46,11 +48,14 @@ export default function AdminPortal() {
     useEffect(() => {
         if (tokenValido) {
             carregarDadosAdmin(tokenValido);
+            if (abaInterna === 'logs') {
+                carregarLogsPaginados(1, tokenValido) // busca a pag 1 ao entrar na aba
+            }
         }
         return () => {
             sessionStorage.removeItem('admin_token');
         };
-    }, [tokenValido]);
+    }, [tokenValido, abaInterna]);
 
     const handleDeletarDenuncia = async (id, telefoneId) => {
         if (!window.confirm("Tem certeza que deseja remover esta denúncia? O score do telefone será recalculado.")) return;
@@ -116,6 +121,20 @@ export default function AdminPortal() {
             carregarDadosAdmin(tokenValido); // atualiza os dados
         } catch (err) {
             alert("Erro ao cadastrar categoria.");
+        }
+    };
+
+    const carregarLogsPaginados = async (pagina, token) => {
+        setCarregandoLogs(true);
+        try {
+            const response = await api.get(`/admin/logs?pagina=${pagina}`, {
+                headers: { 'Authorization': token }
+            });
+            setDadosLogs(response.data);
+        } catch (err) {
+            console.error("Erro ao buscar logs", err);
+        } finally {
+            setCarregandoLogs(false);
         }
     };
 
@@ -290,30 +309,62 @@ export default function AdminPortal() {
                 )}
 
                 {abaInterna === 'logs' && (
-                    <table className="w-full text-left text-sm text-gray-400">
-                        <thead>
-                            <tr className="border-b border-gray-800 text-[10px] font-black uppercase text-gray-500 tracking-wider">
-                                <th className="pb-3">ID do Log</th>
-                                <th className="pb-3">Número Consultado</th>
-                                <th className="pb-3">Data da Consulta</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-800 font-medium">
-                            {dadosAdmin?.logs.length === 0 ? (
-                                <tr>
-                                    <td colSpan="3" className="py-8 text-center text-gray-500 font-medium text-xs">Nenhum registro de log de busca no sistema.</td>
+                    <div>
+                        <table className="w-full text-left text-sm text-gray-400">
+                            <thead>
+                                <tr className="border-b border-gray-800 text-[10px] font-black uppercase text-gray-500 tracking-wider">
+                                    <th className="pb-3">ID do Log</th>
+                                    <th className="pb-3">Número Consultado</th>
+                                    <th className="pb-3">Data da Consulta</th>
                                 </tr>
-                            ) : (
-                                (dadosAdmin?.logs || []).map((log) => (
-                                    <tr key={log.id} className="hover:bg-gray-800/10">
-                                        <td className="py-3 text-xs text-gray-600">#{log.id}</td>
-                                        <td className="py-3 font-semibold text-gray-300">{log.numero_buscado}</td>
-                                        <td className="py-3 text-xs text-gray-500">{new Date(log.data_consulta).toLocaleString('pt-BR')}</td>
+                            </thead>
+                            <tbody className="divide-y divide-gray-800 font-medium">
+                                {carregandoLogs ? (
+                                    <tr>
+                                        <td colSpan="3" className="py-8 text-center text-gray-500 font-medium text-xs">Carregando logs...</td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : dadosLogs?.dados.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="3" className="py-8 text-center text-gray-500 font-medium text-xs">Nenhum registro de log de busca no sistema.</td>
+                                    </tr>
+                                ) : (
+                                    (dadosLogs?.dados || []).map((log) => (
+                                        <tr key={log.id} className="hover:bg-gray-800/10">
+                                            <td className="py-3 text-xs text-gray-600">#{log.id}</td>
+                                            <td className="py-3 font-semibold text-gray-300">{log.numero_buscado}</td>
+                                            <td className="py-3 text-xs text-gray-500">{new Date(log.data_consulta).toLocaleString('pt-BR')}</td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                        {/* controle de paginacao */}
+                        {dadosLogs.totalRegistros > 0 && (
+                            <div className="flex justify-between items-center mt-6 border-t border-gray-800 pt-4">
+                                <span className="text-xs text-gray-500 font-medium">
+                                    Mostrando página <strong className="text-gray-300">{dadosLogs.paginaAtual}</strong> de <strong className="text-gray-300">{dadosLogs.totalPaginas}</strong>
+                                    <span className="ml-2 hidden sm:inline">(Total: {dadosLogs.totalRegistros} registros)</span>
+                                </span>
+
+                                <div className="flex gap-2">
+                                    <button
+                                        disabled={dadosLogs.paginaAtual === 1 || carregandoLogs}
+                                        onClick={() => carregarLogsPaginados(dadosLogs.paginaAtual - 1, tokenValido)}
+                                        className="px-4 py-2 bg-[#1F293D] border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white rounded-xl text-xs font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                                    >
+                                        Anterior
+                                    </button>
+                                    <button
+                                        disabled={dadosLogs.paginaAtual === dadosLogs.totalPaginas || carregandoLogs}
+                                        onClick={() => carregarLogsPaginados(dadosLogs.paginaAtual + 1, tokenValido)}
+                                        className="px-4 py-2 bg-[#1F293D] border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white rounded-xl text-xs font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                                    >
+                                        Próxima
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 )}
 
                 {abaInterna === 'novo-golpe' && (

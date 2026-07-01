@@ -96,6 +96,27 @@ class AdminController {
             return res.status(400).json({erro: 'Não é possível deletar esta categoria pois existem denúncias vinculadas a ela.' });
         }
     }
+
+    async obterLogs(req, res) {
+        try {
+            // pega a pag da url (ex: ?pagina=2). se n, assume pag 1
+            const pagina = parseInt(req.query.pagina) || 1;
+            const limite = 100;
+            const offset = (pagina - 1) * limite;
+            const logs = await AdminRepository.listarLogsPaginados(limite, offset);
+            const totalLogs = await AdminRepository.contarTotalLogs();
+            const totalPaginas = Math.ceil(totalLogs / limite);
+
+            return res.status(200).json({
+                dados: logs,
+                paginaAtual: pagina,
+                totalPaginas: totalPaginas === 0 ? 1 : totalPaginas,
+                totalRegistros: totalLogs
+            });
+        } catch (error) {
+            return res.status(500).json({ erro: error.message });
+        }
+    }
 }
 
 module.exports = new AdminController();
