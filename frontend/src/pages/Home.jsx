@@ -4,6 +4,7 @@ import api from '../services/api';
 import SearchBar from '../components/SearchBar';
 import ScoreBadge from '../components/ScoreBadge';
 import { AlertTriangle, Calendar, MessageSquare, ShieldCheck, CheckCircle, ArrowRight } from 'lucide-react';
+import ShinyText from '../components/ShinyText';
 
 export default function Home() {
   const [numero, setNumero] = useState('');
@@ -57,9 +58,13 @@ export default function Home() {
         <motion.h1 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-extrabold mb-8 text-primaria tracking-tight text-center"
+          className="text-4xl font-extrabold mb-8 tracking-tight text-center"
         >
-          Consulte um número suspeito
+          <ShinyText
+            text="Consulte um número suspeito"
+            speed= {8}
+          />
+
         </motion.h1>
       )}
 
