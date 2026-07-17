@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Eye, Trash2, ShieldCheck, Database, FileText, ClipboardList, PlusCircle, LogOut, Lock, Terminal } from 'lucide-react';
+import { Eye, Trash2, ShieldCheck, Database, FileText, ClipboardList, PlusCircle, LogOut, Lock, Terminal, ChevronUp, ChevronDown } from 'lucide-react';
 import api from '../services/api';
 
 export default function AdminPortal() {
@@ -13,6 +13,13 @@ export default function AdminPortal() {
     const [msgSucessoGolpe, setMsgSucessoGolpe] = useState('');
     const [dadosLogs, setDadosLogs] = useState({ dados: [], paginaAtual: 1, totalPaginas: 1, totalRegistros: 0 });
     const [carregandoLogs, setCarregandoLogs] = useState(false);
+    const [denunciasExpandidas, setDenunciasExpandidas] = useState([]);
+
+    const toggleExpandirRelato = (id) => {
+        setDenunciasExpandidas((prev) =>
+        prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
+        );
+    };
 
     // tenta autenticar a chave digitada com o backend
     const handleVerificarChave = async (e) => {
@@ -238,7 +245,23 @@ export default function AdminPortal() {
                                     <td className="py-4 font-bold text-white">{formatarTelefone(den.numero)}</td>
                                     <td className="py-4 text-xs"><span className="bg-[#1F293D] border border-gray-700 text-gray-300 px-2 py-1 rounded-md font-semibold">{den.tipo_golpe}</span></td>
                                     <td className="py-4 text-xs text-gray-500">{new Date(den.criado_em).toLocaleString('pt-BR')}</td>
-                                    <td className="py-4 text-xs text-gray-400 max-w-xs truncate">"{den.descricao}"</td>
+                                    <td className="py-4 text-xs text-gray-400 max-w-xs">
+                                        <div className={`transition-all duration-300 ${denunciasExpandidas.includes(den.id) ? 'whitespace-normal wrap-break-word' : 'truncate'}`}>
+                                            "{den.descricao}"
+                                        </div>
+                                        {den.descricao && den.descricao.length > 88 && (
+                                            <button
+                                                onClick={() => toggleExpandirRelato(den.id)}
+                                                className="flex items-center gap-1 mt-1.5 text-[10px] font-bold text-neonCiano hover:text-neonRosa uppercase tracking-wider transition-colors"
+                                            >
+                                                {denunciasExpandidas.includes(den.id) ? (
+                                                    <><ChevronUp size={13} /></>
+                                                ) : (
+                                                    <><ChevronDown size={13} /></>
+                                                )}
+                                            </button>
+                                        )}
+                                    </td>
                                     <td className="py-4 text-right">
                                         <button onClick={() => handleDeletarDenuncia(den.id, den.telefone_id)} className="text-gray-500 hover:text-red-400 p-2 rounded-xl hover:bg-red-950/20 transition-all">
                                             <Trash2 size={15} />
