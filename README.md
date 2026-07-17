@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="" width="120%">
+  <img src="https://github.com/user-attachments/assets/106dbd4b-a093-4029-a50e-7990f7791b4d" width="80%">
   <br/>
 </h1>
 
@@ -62,11 +62,11 @@ A arquitetura do projeto segue o modelo monolítico separado em camadas.
 ## Demonstração Visual
 
 <div align="center">
-  <img src="" alt="Tela Principal" width="45%">
-  <img src="" alt="Formulário de Denúncias" width="45%">
+  <img src="https://github.com/user-attachments/assets/e9ba5ea5-3d17-4a30-aaf9-e69f3ad89e77" alt="Tela Principal" width="45%">
+  <img src="https://github.com/user-attachments/assets/04b5a10d-2754-4d5a-96df-3726594544c6" alt="Formulário de Denúncias" width="45%">
 </div>
 <br>
 <div align="center">
-  <img src="" alt="Dashboard Analítico" width="45%">
-  <img src="" alt="Portal Admin" width="45%">
+  <img src="https://github.com/user-attachments/assets/02f0d2f9-319c-4ef2-854b-6af2d12621ef" alt="Dashboard Analítico" width="45%">
+  <img src="https://github.com/user-attachments/assets/d9b83c65-8094-47ea-af92-ed6237ce0455" alt="Portal Admin" width="45%">
 </div>
