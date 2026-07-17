@@ -25,7 +25,7 @@ export default function Layout({ children, telaAtiva, setTelaAtiva }) {
                             <FingerprintPattern size={24} className="text-neonRosa" />                       
 
                             <span className="text-2xl font-bold tracking-tight text-primaria">
-                                Golpe<span className="text-transparent bg-clip-text bg-linear-to-r from-neonCiano to-neonRosa">Zero</span>
+                                Busca<span className="text-transparent bg-clip-text bg-linear-to-r from-neonCiano to-neonRosa">Fone</span>
                             </span>
                         </div>
                         <span className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
