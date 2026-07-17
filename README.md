@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/user-attachments/assets/106dbd4b-a093-4029-a50e-7990f7791b4d" width="80%">
+  <img src="https://github.com/user-attachments/assets/e28480cd-d772-44fd-bd3b-996952eb683a" width="60%">
   <br/>
 </h1>
 
@@ -21,7 +21,7 @@
 
 <br/>
 
-O **GolpeZero** é uma Single Page Application (SPA) desenvolvida para mapear fraudes telefônicas. A plataforma permite que qualquer pessoa consulte números suspeitos, registre denúncias e visualize indicadores de risco baseados em um sistema de reputação.
+O **BuscaFone** é uma Single Page Application (SPA) desenvolvida para mapear fraudes telefônicas. A plataforma permite que qualquer pessoa consulte números suspeitos, registre denúncias e visualize indicadores de risco baseados em um sistema de reputação.
 
 > **Aviso Legal:** Este projeto é proprietário. Todos os direitos estão reservados. Não é permitida a cópia, distribuição, modificação ou uso comercial/pessoal deste código por terceiros sem autorização prévia e expressa do autor.
 
@@ -62,8 +62,8 @@ A arquitetura do projeto segue o modelo monolítico separado em camadas.
 ## Demonstração Visual
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/e9ba5ea5-3d17-4a30-aaf9-e69f3ad89e77" alt="Tela Principal" width="45%">
-  <img src="https://github.com/user-attachments/assets/04b5a10d-2754-4d5a-96df-3726594544c6" alt="Formulário de Denúncias" width="45%">
+  <img src="https://github.com/user-attachments/assets/34678a0d-f947-4880-b059-9bb6fa9cc0cf" alt="Tela Principal" width="45%">
+  <img src="https://github.com/user-attachments/assets/e18198a7-908b-41be-842c-287263102fdd" alt="Formulário de Denúncias" width="45%">
 </div>
 <br>
 <div align="center">
